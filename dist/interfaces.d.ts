@@ -1,5 +1,5 @@
 import { NumberConfigKey } from "./resources/configs/firmware";
-export declare type Primitive = string | number | boolean;
+export type Primitive = string | number | boolean;
 /** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
     /** Microcontroller configuration and settings. */
@@ -19,17 +19,17 @@ export interface BotStateTree {
     jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
-        farmwares: Dictionary<FarmwareManifest | LegacyFarmwareManifest>;
+        farmwares: Dictionary<FarmwareManifest>;
     };
     gpio_registry: {
         [pin: number]: string | undefined;
     } | undefined;
 }
 /** Microcontroller board. */
-export declare type FirmwareHardware = "none" | "arduino" | "express_k10" | "express_k11" | "farmduino_k14" | "farmduino_k15" | "farmduino_k16" | "farmduino";
+export type FirmwareHardware = "none" | "arduino" | "express_k10" | "express_k11" | "express_k12" | "farmduino_k14" | "farmduino_k15" | "farmduino_k16" | "farmduino_k17" | "farmduino";
 /** FarmBot motor and encoder positions. */
-export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
-export declare type AxisState = "idle" | "begin" | "accelerate" | "cruise" | "decelerate" | "stop" | "crawl";
+export type LocationName = "position" | "scaled_encoders" | "raw_encoders";
+export type AxisState = "idle" | "begin" | "accelerate" | "cruise" | "decelerate" | "stop" | "crawl";
 export interface LocationData {
     position: Record<Xyz, number | undefined>;
     scaled_encoders: Record<Xyz, number | undefined>;
@@ -38,13 +38,14 @@ export interface LocationData {
     axis_states?: Record<Xyz, AxisState | undefined>;
 }
 /** Job progress status. */
-export declare type ProgressStatus = "complete" | "working" | "error";
-export declare type JobProgress = PercentageProgress | BytesProgress;
+export type ProgressStatus = "complete" | "working" | "error";
+export type JobProgress = PercentageProgress | BytesProgress;
 interface JobProgressBase {
     status: ProgressStatus;
     type: string;
     file_type: string;
     time: string;
+    updated_at: number;
 }
 /** Percent job progress. */
 export interface PercentageProgress extends JobProgressBase {
@@ -65,47 +66,14 @@ export interface Alert {
     slug: string;
 }
 /**
- * Some of the data provided by Farmware author in a Farmware manifest JSON file.
- * Used in FarmBot OS < v8, since this info is now included in `FarmwareManifest`.
- */
-export interface LegacyFarmwareManifestMeta {
-    /** eg: "6" */
-    min_os_version_major: string;
-    description: string;
-    language: string;
-    version: string;
-    author: string;
-    zip: string;
-}
-/**
  * Configs (inputs) requested by a Farmware.
  * Can be namespaced and supplied to a run Farmware command.
  * Also used in FarmBot Web App Farmware page form builder.
  */
-export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
+export type FarmwareConfig = Record<"name" | "label" | "value", string>;
 /**
  * The Farmware manifest is a JSON file published by Farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades.
- * Used in FarmBot OS < v8. For FarmBot OS >= v8, use `FarmwareManifest`.
- */
-export interface LegacyFarmwareManifest {
-    farmware_tools_version?: string;
-    /** The thing that will run the Farmware eg: `python`. */
-    executable: string;
-    uuid: string;
-    /** Command line args passed to `executable`. */
-    args: string[];
-    name: string;
-    /** Farmware manifest URL. */
-    url: string;
-    path: string;
-    meta: LegacyFarmwareManifestMeta;
-    config: FarmwareConfig[];
-}
-/**
- * The Farmware manifest is a JSON file published by Farmware authors.
- * It is used by FarmBot OS to perform installation and upgrades.
- * Used in FarmBot OS >= v8. For FarmBot OS < v8, use `LegacyFarmwareManifest`.
  */
 export interface FarmwareManifest {
     /** "2.0" */
@@ -141,20 +109,20 @@ export declare enum Encoder {
     differential = 1
 }
 /** Microcontroller firmware hardware setting names. */
-export declare type McuParamName = NumberConfigKey;
+export type McuParamName = NumberConfigKey;
 /** Microcontroller configuration and settings. */
-export declare type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
+export type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
 /** Bot axis names. */
-export declare type Xyz = "x" | "y" | "z";
+export type Xyz = "x" | "y" | "z";
 /** 3 dimensional vector. */
-export declare type Vector3 = Record<Xyz, number>;
+export type Vector3 = Record<Xyz, number>;
 /** GPIO pin value record. */
 export interface Pin {
     mode: number;
     value: number;
 }
 /** Lookup for pin status, indexed by pin number. */
-export declare type Pins = Dictionary<Pin | undefined>;
+export type Pins = Dictionary<Pin | undefined>;
 /** FarmBot OS configs. */
 export interface FullConfiguration {
     arduino_debug_messages: number;
@@ -172,13 +140,14 @@ export interface FullConfiguration {
     update_channel?: string;
     safe_height?: number;
     soil_height?: number;
+    gantry_height?: number;
 }
 /** FarmBot OS configs. */
-export declare type Configuration = Partial<FullConfiguration>;
+export type Configuration = Partial<FullConfiguration>;
 /** FarmBot OS config names. */
-export declare type ConfigurationName = keyof Configuration;
+export type ConfigurationName = keyof Configuration;
 /** The possible values for the sync_status property on informational_settings */
-export declare type SyncStatus = "booting" | "maintenance" | "sync_error" | "sync_now" | "synced" | "syncing" | "unknown";
+export type SyncStatus = "booting" | "maintenance" | "sync_error" | "sync_now" | "synced" | "syncing" | "unknown";
 /** Various FarmBot OS status data. */
 export interface InformationalSettings {
     /** System uptime in seconds. */
@@ -231,8 +200,10 @@ export interface InformationalSettings {
     currently_on_beta?: boolean;
     /** FBOS update available? */
     update_available?: boolean;
+    /** CSV list of available camera device numbers (/dev/video#). */
+    video_devices?: string;
 }
-export declare type MQTTEventName = "connect" | "message";
+export type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {
     [key: string]: T;
 }

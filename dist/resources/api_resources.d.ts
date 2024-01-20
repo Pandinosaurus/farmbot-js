@@ -1,7 +1,7 @@
 import { ALLOWED_MESSAGE_TYPES, ALLOWED_CHANNEL_NAMES, PlantStage, Color, Sequence, InternalFarmEventBodyItem } from "..";
 import { VariableDeclaration, ParameterDeclaration, ParameterApplication } from "../corpus";
-export declare type TimeUnit = "never" | "minutely" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
-export declare type ExecutableType = "Sequence" | "Regimen";
+export type TimeUnit = "never" | "minutely" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
+export type ExecutableType = "Sequence" | "Regimen";
 export declare enum ToolPulloutDirection {
     NONE = 0,
     POSITIVE_X = 1,
@@ -86,7 +86,7 @@ export interface SpecialPinBinding extends PinBindingBase {
     binding_type: PinBindingType.special;
     special_action: PinBindingSpecialAction;
 }
-export declare type PinBinding = StandardPinBinding | SpecialPinBinding;
+export type PinBinding = StandardPinBinding | SpecialPinBinding;
 export interface PlantTemplate extends ResourceBase {
     saved_garden_id: number;
     radius: number;
@@ -112,6 +112,10 @@ export interface PlantPointer extends BasePoint {
     planted_at?: string;
     plant_stage: PlantStage;
     radius: number;
+    depth: number;
+    water_curve_id?: number;
+    spread_curve_id?: number;
+    height_curve_id?: number;
 }
 export interface ToolSlotPointer extends BasePoint {
     pointer_type: "ToolSlot";
@@ -128,7 +132,7 @@ export interface WeedPointer extends BasePoint {
     plant_stage: PlantStage;
     radius: number;
 }
-export declare type Point = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
+export type Point = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
 /** Individual step that a regimen will execute at a point in time. */
 export interface RegimenItem {
     id?: number;
@@ -147,6 +151,7 @@ export interface Regimen extends ResourceBase {
 }
 export interface SavedGarden extends ResourceBase {
     name?: string;
+    notes?: string;
 }
 export interface Sensor extends ResourceBase {
     pin: number | undefined;
@@ -162,8 +167,24 @@ export interface SensorReading extends ResourceBase {
     pin: number;
     read_at: string;
 }
+export interface Telemetry {
+    id: number;
+    updated_at: string;
+    created_at: number;
+    target: string;
+    soc_temp?: number;
+    throttled?: string;
+    wifi_level_percent?: number;
+    uptime?: number;
+    memory_usage?: number;
+    disk_usage?: number;
+    cpu_usage?: number;
+    fbos_version?: string;
+    firmware_hardware?: string;
+}
 export interface Tool extends ResourceBase {
     name?: string;
+    flow_rate_ml_per_s: number;
 }
 export interface WebcamFeed extends ResourceBase {
     url: string;
@@ -185,6 +206,11 @@ export interface SequenceResource extends Sequence, ResourceBase {
     sequence_versions?: number[];
     copyright?: string;
 }
+export interface Curve extends ResourceBase {
+    name: string;
+    type: "water" | "spread" | "height";
+    data: Record<number, number>;
+}
 export interface Crop extends ResourceBase {
     svg_icon?: string | undefined;
     spread?: number | undefined;
@@ -197,6 +223,7 @@ export interface FarmwareEnv extends ResourceBase {
 export interface User extends ResourceBase {
     name: string;
     email: string;
+    language: string;
 }
 export interface DeviceAccountSettings extends ResourceBase {
     name: string;
@@ -214,8 +241,9 @@ export interface DeviceAccountSettings extends ResourceBase {
     lat: number | undefined;
     lng: number | undefined;
     indoor: boolean;
+    rpi: string | undefined;
 }
-export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
+export type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending" | "xy_alternating" | "yx_alternating" | "nn";
 interface PointGroupCriteria {
     day: {
         op: ">" | "<";

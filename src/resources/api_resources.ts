@@ -141,6 +141,10 @@ export interface PlantPointer extends BasePoint {
   planted_at?: string;
   plant_stage: PlantStage;
   radius: number;
+  depth: number;
+  water_curve_id?: number;
+  spread_curve_id?: number;
+  height_curve_id?: number;
 }
 
 export interface ToolSlotPointer extends BasePoint {
@@ -187,6 +191,7 @@ export interface Regimen extends ResourceBase {
 
 export interface SavedGarden extends ResourceBase {
   name?: string;
+  notes?: string;
 }
 
 export interface Sensor extends ResourceBase {
@@ -205,8 +210,25 @@ export interface SensorReading extends ResourceBase {
   read_at: string;
 }
 
+export interface Telemetry {
+  id: number;
+  updated_at: string;
+  created_at: number;
+  target: string;
+  soc_temp?: number;
+  throttled?: string;
+  wifi_level_percent?: number;
+  uptime?: number;
+  memory_usage?: number;
+  disk_usage?: number;
+  cpu_usage?: number;
+  fbos_version?: string;
+  firmware_hardware?: string;
+}
+
 export interface Tool extends ResourceBase {
   name?: string;
+  flow_rate_ml_per_s: number;
 }
 
 export interface WebcamFeed extends ResourceBase {
@@ -232,6 +254,12 @@ export interface SequenceResource extends Sequence, ResourceBase {
   copyright?: string;
 }
 
+export interface Curve extends ResourceBase {
+  name: string;
+  type: "water" | "spread" | "height";
+  data: Record<number, number>;
+}
+
 export interface Crop extends ResourceBase {
   svg_icon?: string | undefined;
   spread?: number | undefined;
@@ -246,6 +274,7 @@ export interface FarmwareEnv extends ResourceBase {
 export interface User extends ResourceBase {
   name: string;
   email: string;
+  language: string;
 }
 
 export interface DeviceAccountSettings extends ResourceBase {
@@ -264,6 +293,7 @@ export interface DeviceAccountSettings extends ResourceBase {
   lat: number | undefined;
   lng: number | undefined;
   indoor: boolean;
+  rpi: string | undefined;
 }
 
 export type PointGroupSortType =
@@ -271,7 +301,10 @@ export type PointGroupSortType =
   | "xy_ascending"
   | "xy_descending"
   | "yx_ascending"
-  | "yx_descending";
+  | "yx_descending"
+  | "xy_alternating"
+  | "yx_alternating"
+  | "nn";
 
 interface PointGroupCriteria {
   day: {

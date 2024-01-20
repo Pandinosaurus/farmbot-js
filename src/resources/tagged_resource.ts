@@ -1,4 +1,5 @@
 import {
+  Curve,
   Crop,
   DeviceAccountSettings,
   FarmEvent,
@@ -18,6 +19,7 @@ import {
   Sensor,
   SensorReading,
   SequenceResource,
+  Telemetry,
   Tool,
   ToolSlotPointer,
   User,
@@ -33,6 +35,7 @@ import { Alert } from "../interfaces";
 export type ResourceName =
   | "Alert"
   | "Crop"
+  | "Curve"
   | "Device"
   | "FarmEvent"
   | "FarmwareEnv"
@@ -53,6 +56,7 @@ export type ResourceName =
   | "Sensor"
   | "SensorReading"
   | "Sequence"
+  | "Telemetry"
   | "Tool"
   | "User"
   | "WebAppConfig"
@@ -92,6 +96,7 @@ export interface RestResource<T extends ResourceName, U extends object>
 export type TaggedResource =
   | TaggedAlert
   | TaggedCrop
+  | TaggedCurve
   | TaggedDevice
   | TaggedFarmEvent
   | TaggedFarmwareEnv
@@ -111,6 +116,7 @@ export type TaggedResource =
   | TaggedSensor
   | TaggedSensorReading
   | TaggedSequence
+  | TaggedTelemetry
   | TaggedTool
   | TaggedUser
   | TaggedWebAppConfig
@@ -125,6 +131,7 @@ type PointUnion =
 
 export type TaggedAlert = RestResource<"Alert", Alert>;
 export type TaggedCrop = RestResource<"Crop", Crop>;
+export type TaggedCurve = RestResource<"Curve", Curve>;
 export type TaggedDevice = RestResource<"Device", DeviceAccountSettings>;
 export type TaggedFolder = RestResource<"Folder", Folder>;
 export type TaggedFarmEvent = RestResource<"FarmEvent", FarmEvent>;
@@ -146,6 +153,7 @@ export type TaggedSavedGarden = RestResource<"SavedGarden", SavedGarden>;
 export type TaggedSensor = RestResource<"Sensor", Sensor>;
 export type TaggedSensorReading = RestResource<"SensorReading", SensorReading>;
 export type TaggedSequence = RestResource<"Sequence", SequenceResource>;
+export type TaggedTelemetry = RestResource<"Telemetry", Telemetry>;
 export type TaggedTool = RestResource<"Tool", Tool>;
 export type TaggedToolSlotPointer = RestResource<"Point", ToolSlotPointer>;
 export type TaggedUser = RestResource<"User", User>;

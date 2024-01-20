@@ -13,6 +13,7 @@ export interface WebAppConfig {
   crop_images: boolean;
   clip_image_layer: boolean;
   debug_log: number;
+  default_plant_depth: number;
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
   disable_i18n: boolean;
@@ -22,15 +23,18 @@ export interface WebAppConfig {
   display_trail: boolean;
   dynamic_map: boolean;
   enable_browser_speak: boolean;
+  enable_3d_electronics_box_top: boolean;
   encoder_figure: boolean;
   error_log: number;
   expand_step_options: boolean;
   fun_log: number;
+  go_button_axes: string;
   hide_sensors: boolean;
   hide_webcam_widget: boolean;
   highlight_modified_settings: boolean;
   home_button_homing: boolean;
   info_log: number;
+  landing_page: string;
   legend_menu_open: boolean;
   map_size_x: number;
   map_size_y: number;
@@ -40,11 +44,13 @@ export interface WebAppConfig {
   scaled_encoders: boolean;
   show_advanced_settings: boolean;
   show_camera_view_area: boolean;
+  show_uncropped_camera_view_area: boolean;
   show_farmbot: boolean;
   show_first_party_farmware: boolean;
   show_historic_points: boolean;
   show_images: boolean;
   show_motor_plot: boolean;
+  show_missed_step_plot: boolean;
   show_pins: boolean;
   show_plants: boolean;
   show_points: boolean;
@@ -83,10 +89,13 @@ export type NumberConfigKey =
   | "bot_origin_quadrant"
   | "map_size_x"
   | "map_size_y"
+  | "default_plant_depth"
   | "zoom_level";
 
 export type StringConfigKey =
   | "created_at"
+  | "go_button_axes"
+  | "landing_page"
   | "photo_filter_begin"
   | "photo_filter_end"
   | "updated_at";
@@ -106,6 +115,7 @@ export type BooleanConfigKey =
   | "display_trail"
   | "dynamic_map"
   | "enable_browser_speak"
+  | "enable_3d_electronics_box_top"
   | "encoder_figure"
   | "expand_step_options"
   | "hide_sensors"
@@ -117,11 +127,13 @@ export type BooleanConfigKey =
   | "scaled_encoders"
   | "show_advanced_settings"
   | "show_camera_view_area"
+  | "show_uncropped_camera_view_area"
   | "show_farmbot"
   | "show_first_party_farmware"
   | "show_historic_points"
   | "show_images"
   | "show_motor_plot"
+  | "show_missed_step_plot"
   | "show_pins"
   | "show_plants"
   | "show_points"

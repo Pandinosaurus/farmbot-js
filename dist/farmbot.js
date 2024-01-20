@@ -333,7 +333,7 @@ var Farmbot = /** @class */ (function () {
                             var reason = (response.body || [])
                                 .map(function (x) { return x.args.message; })
                                 .join(", ");
-                            return reject(new Error("Problem sending RPC command: " + reason));
+                            return reject(new Error(reason));
                         default:
                             console.dir(response);
                             throw new Error("Got a bad CeleryScript node.");
@@ -402,8 +402,8 @@ var Farmbot = /** @class */ (function () {
                 clean: true,
                 clientId: "FBJS-".concat(Farmbot.VERSION, "-").concat((0, util_1.uuid)()),
                 password: token,
-                protocolId: "MQIsdp",
-                protocolVersion: 3,
+                protocolId: "MQTT",
+                protocolVersion: 4,
                 reconnectPeriod: reconnectPeriod,
                 username: mqttUsername,
             });
@@ -454,7 +454,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "15.0.0";
+    Farmbot.VERSION = "15.8.7";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
